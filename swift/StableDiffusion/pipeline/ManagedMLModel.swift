@@ -109,7 +109,7 @@ public extension Array where Element == ManagedMLModel {
         return results
     }
 }
-
+/*
 extension MLFeatureProvider {
     var featureValueDictionary: [String : MLFeatureValue] {
         self.featureNames.reduce(into: [String : MLFeatureValue]()) { result, name in
@@ -125,3 +125,4 @@ extension MLBatchProvider {
         }
     }
 }
+*/

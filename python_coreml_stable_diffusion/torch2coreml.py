@@ -782,7 +782,8 @@ def convert_unet(pipe, args, model_name = None):
     # If original Unet does not exist, export it from PyTorch+diffusers
     elif not os.path.exists(out_path):
         # Prepare sample input shapes and values
-        batch_size = 2  # for classifier-free guidance
+        #batch_size = 2  # for classifier-free guidance
+        batch_size = 1
         sample_shape = (
             batch_size,                    # B
             pipe.unet.config.in_channels,  # C
@@ -850,10 +851,13 @@ def convert_unet(pipe, args, model_name = None):
                 add_time_ids = list(original_size + crops_coords_top_left + target_size)
                 add_neg_time_ids = list(original_size + crops_coords_top_left + target_size)
 
-            time_ids = [
-                add_neg_time_ids,
-                add_time_ids
-            ]
+            if batch_size == 2:
+                time_ids = [
+                    add_neg_time_ids,
+                    add_time_ids
+                ]
+            else:
+                time_ids = [add_time_ids]
 
             # Pooled text embedding from text_encoder_2
             text_embeds_shape = (
@@ -1311,7 +1315,8 @@ def convert_controlnet(pipe, args):
             continue
 
         if i == 0:
-            batch_size = 2  # for classifier-free guidance
+            #batch_size = 2  # for classifier-free guidance
+            batch_size = 1
             sample_shape = (
                 batch_size,                    # B
                 pipe.unet.config.in_channels,  # C

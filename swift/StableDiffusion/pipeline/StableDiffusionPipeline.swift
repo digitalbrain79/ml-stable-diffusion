@@ -283,7 +283,7 @@ public struct StableDiffusionPipeline: StableDiffusionPipelineProtocol {
                 additionalResiduals: additionalResiduals
             )
 
-            noise = performGuidance(noise, config.guidanceScale)
+            //noise = performGuidance(noise, config.guidanceScale)
 
             // Have the scheduler compute the previous (t-1) latent
             // sample given the predicted noise and current sample
@@ -441,6 +441,7 @@ extension StableDiffusionPipelineProtocol {
                     result.initializeElement(
                         at: i,
                         to: scalars[i] + guidanceScale * (scalars[strides[0] + i] - scalars[i])
+                        //to: scalars[i]
                     )
                 }
             }

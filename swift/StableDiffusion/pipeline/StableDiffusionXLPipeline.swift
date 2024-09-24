@@ -210,7 +210,8 @@ public struct StableDiffusionXLPipeline: StableDiffusionPipelineProtocol {
             // Expand the latents for classifier-free guidance
             // and input to the Unet noise prediction model
             let latentUnetInput = latents.map {
-                MLShapedArray<Float32>(concatenating: [$0, $0], alongAxis: 0)
+                //MLShapedArray<Float32>(concatenating: [$0, $0], alongAxis: 0)
+                MLShapedArray<Float32>(concatenating: [$0], alongAxis: 0)
             }
 
             // Switch to refiner if specified
@@ -319,8 +320,10 @@ public struct StableDiffusionXLPipeline: StableDiffusionPipelineProtocol {
 
         // Convert to Unet hidden state representation
         // Concatenate the prompt and negative prompt embeddings
-        let hiddenStates = toHiddenStates(MLShapedArray(concatenating: [negativePromptEmbedding, promptEmbedding], alongAxis: 0))
-        let pooledStates = MLShapedArray(concatenating: [negativePooled, pooled], alongAxis: 0)
+        //let hiddenStates = toHiddenStates(MLShapedArray(concatenating: [negativePromptEmbedding, promptEmbedding], alongAxis: 0))
+        let hiddenStates = toHiddenStates(MLShapedArray(concatenating: [promptEmbedding], alongAxis: 0))
+        //let pooledStates = MLShapedArray(concatenating: [negativePooled, pooled], alongAxis: 0)
+        let pooledStates = MLShapedArray(concatenating: [pooled], alongAxis: 0)
 
         // Inline helper functions for geometry creation
         func refinerGeometry() -> MLShapedArray<Float32> {
@@ -354,7 +357,8 @@ public struct StableDiffusionXLPipeline: StableDiffusionPipelineProtocol {
                 // Remove once model input shapes are ubiquitous
                 shape: unet.latentTimeIdShape.count > 1 ? [1, 6] : [6]
             )
-            return MLShapedArray<Float32>(concatenating: [geometry, geometry], alongAxis: 0)
+            //return MLShapedArray<Float32>(concatenating: [geometry, geometry], alongAxis: 0)
+            return MLShapedArray<Float32>(concatenating: [geometry], alongAxis: 0)
         }
 
         let geometry = forRefiner ? refinerGeometry() : baseGeometry()
