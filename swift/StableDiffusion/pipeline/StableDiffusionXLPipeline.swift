@@ -241,7 +241,7 @@ public struct StableDiffusionXLPipeline: StableDiffusionPipelineProtocol {
                 geometryConditioning: geometryConditioning
             )
 
-            noise = performGuidance(noise, config.guidanceScale)
+            //noise = performGuidance(noise, config.guidanceScale)
 
             // Have the scheduler compute the previous (t-1) latent
             // sample given the predicted noise and current sample
